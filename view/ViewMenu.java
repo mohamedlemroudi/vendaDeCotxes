@@ -1,12 +1,16 @@
 package view;
+import model.Compra;
+import model.Oferta;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class ViewMenu {
     private Scanner teclat = new Scanner(System.in);
-    private ViewComprador comprador = new ViewComprador();
     protected IComprador escolataComprador;
     private boolean surtirMenuInicial = false;
     protected boolean menuComprador = false;
+    private ViewComprador viewComprador = new ViewComprador();
 
     // De forma indirecta ens connectem amb el controlador
     public void setEscolataComprador(IComprador escolataComprador) {
@@ -26,7 +30,7 @@ public class ViewMenu {
         }
 
         if (menuComprador) {
-            this.comprador.iniciMenuEines();
+            this.iniciMenuEines();
         }
     }
 
@@ -36,7 +40,7 @@ public class ViewMenu {
             case 1:
                 // Opció de login
                 if (this.escolataComprador != null) {
-                    String[] credencials = comprador.loginComprador();
+                    String[] credencials = this.viewComprador.loginComprador();
                     boolean login = this.escolataComprador.loginComprador(credencials[0], credencials[1]);
                     if (login) {
                         System.out.println("Sessió iniciada!");
@@ -50,7 +54,7 @@ public class ViewMenu {
                 break;
             case 2:
                 // Opció de registrar
-                String[] dadesComprador = comprador.registrarComprador();
+                String[] dadesComprador = this.viewComprador.registrarComprador();
                 boolean registrar =  this.escolataComprador.registrarComprador(dadesComprador[0], dadesComprador[1],
                         dadesComprador[2], Integer.parseInt(dadesComprador[3]), dadesComprador[4], dadesComprador[5],
                         dadesComprador[6]);
@@ -70,4 +74,42 @@ public class ViewMenu {
                 System.out.println("NO existeix l'opció");
         }
     }
+
+    // Vista del menú de les funcionalitats que disposa el comprador
+    public void iniciMenuEines() {
+        while (this.menuComprador) {
+            String menu = "1. Veura Ofertes\n" +
+                    "2. Realitzar Compra\n" +
+                    "3. Les Meves Compres\n" +
+                    "4. Surtir";
+            System.out.println(menu);
+            System.out.print("Opció: ");
+            int opcio = teclat.nextInt();
+            this.opcioMenuEines(opcio);
+        }
+    }
+
+    // Opcions del menú d'eines del comprador
+    private void opcioMenuEines(int opcio) {
+        switch (opcio) {
+            case 1:
+                this.viewComprador.visualitzarOfertes(this.escolataComprador.veureOfertes());
+                break;
+            case 2:
+                int idOferta = this.viewComprador.realitzarCompra();
+                this.escolataComprador.realitzarCompra(idOferta);
+                System.out.println("Compra realitzada!");
+                break;
+            case 3:
+                this.viewComprador.visualitzarCompres(this.escolataComprador.veureLesMevesCompres());
+                break;
+            case 4:
+                this.menuComprador = false;
+                break;
+            default:
+                System.out.println("NO existeix l'opció");
+        }
+    }
+
+
 }

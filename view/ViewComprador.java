@@ -1,15 +1,14 @@
 package view;
 
 import model.Compra;
-import model.Oferta;;
+import model.Oferta;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class ViewComprador {
-    public Scanner teclat = new Scanner(System.in);
 
-    // Instancia de la vista del menú
-    public ViewMenu viewMenu = new ViewMenu();
+    private Scanner teclat = new Scanner(System.in);
 
     // Vista pel login
     public String[] loginComprador() {
@@ -57,44 +56,8 @@ public class ViewComprador {
         return dadesComprador;
     }
 
-    // Vista del menú de les funcionalitats que disposa el comprador
-    public void iniciMenuEines() {
-        while (this.viewMenu.menuComprador) {
-            String menu = "1. Veura Ofertes\n" +
-                    "2. Realitzar Compra\n" +
-                    "3. Les Meves Compres\n" +
-                    "4. Surtir";
-            System.out.println(menu);
-            System.out.print("Opció: ");
-            int opcio = teclat.nextInt();
-            this.opcioMenuEines(opcio);
-        }
-    }
-
-    // Opcions del menú d'eines del comprador
-    private void opcioMenuEines(int opcio) {
-        switch (opcio) {
-            case 1:
-                this.visualitzarOfertes(this.viewMenu.escolataComprador.veureOfertes());
-                break;
-            case 2:
-                int idOferta = this.realitzarCompra();
-                this.viewMenu.escolataComprador.realitzarCompra(idOferta);
-                System.out.println("Compra realitzada!");
-                break;
-            case 3:
-                this.visualitzarCompres(this.viewMenu.escolataComprador.veureLesMevesCompres());
-                break;
-            case 4:
-                this.viewMenu.menuComprador = false;
-                break;
-            default:
-                System.out.println("NO existeix l'opció");
-        }
-    }
-
     // Vista per visualitzar ofertes
-    private void visualitzarOfertes(List<Oferta> ofertes) {
+    void visualitzarOfertes(List<Oferta> ofertes) {
         System.out.println("---------- Ofertes ----------");
         for (Oferta oferta : ofertes) {
             System.out.println("ID Oferta: " + oferta.getIdOferta());
@@ -113,14 +76,14 @@ public class ViewComprador {
     }
 
     // Vista per realitzar compra
-    private int realitzarCompra() {
+    int realitzarCompra() {
         System.out.println("Quina oferta vols compra? ");
         int idOferta = Integer.parseInt(teclat.nextLine());
         return idOferta;
     }
 
     // Vista per visualitzar les compres del comprador que ha iniciat sessió
-    private void visualitzarCompres(List<Compra> compres) {
+    void visualitzarCompres(List<Compra> compres) {
         System.out.println("---------- Les Meves Compres ----------");
         for (Compra compra : compres) {
             System.out.println("ID Compra: " + compra.getIdCompra());
@@ -136,4 +99,5 @@ public class ViewComprador {
             System.out.println("---------------------------");
         }
     }
+
 }
